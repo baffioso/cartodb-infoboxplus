@@ -7,7 +7,7 @@
     "test": ""
   },
   "author": "Niels Kjøller Hansen",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "devDependencies": {
     "css-loader": "^0.25.0",
     "expose-loader": "^0.7.1",

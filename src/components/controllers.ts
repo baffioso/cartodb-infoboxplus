@@ -9,6 +9,7 @@ export interface InfoOptions {
   pixelBuffer: number;
   noDataMessage: string;
   autostart: boolean;
+  objectName: string;
 }
 
 export class InfoController {
@@ -27,6 +28,9 @@ export class InfoController {
     this.model.layer = options.layer;
     this.model.sublayer = options.layer.getSubLayer(options.sublayerNumber)
     this.model.noDataMessage = options.noDataMessage;
+    this.model.objectName = options.objectName;
+    console.log(this.model.objectName);
+    console.log(options);
     this.model.template = this._stripCartoTemplate(this.model.sublayer.infowindow.attributes.template);
     this.mapLayerView = new InfoMapLayerView(this);
 
@@ -71,6 +75,7 @@ export class InfoController {
       this.listView.show();
     } else {
       this.listView.hide();
+      this.model.controlElement.className = this.model.controlElement.className.replace(' leaflet-control-cartodb-infoboxplus-expanded','');
     }
     let popup_html: string;
     if (this.model.selectedFeatures.length > 0) {
@@ -99,8 +104,7 @@ export class InfoController {
     this.model.layer.setInteraction(this.model.interactionBeforeActive);
     this.model.map.off('click', this.mapClickFunction);
     this.listView.emptyList();
-    let newClass = this.model.controlElement.className.replace(' leaflet-control-cartodb-infoboxplus-expanded','');
-    this.model.controlElement.className = newClass;
+    this.model.controlElement.className = this.model.controlElement.className.replace(' leaflet-control-cartodb-infoboxplus-expanded','')
     this.listView.hide();
     this.model.isActive = false;
     console.log('Infobox tool is no longer active.')
@@ -115,6 +119,16 @@ export class InfoController {
     this.model.isActive = true;
     console.log('Infobox tool is now active.')
   }
+
+  listShown() {
+    this.buttonView.expand(this.model.objectName,
+                         this.model.selectedFeatures.length);
+  }
+
+  listHidden() {
+    this.buttonView.collapse();
+  }
+
   private _stripCartoTemplate(cartoHTML : string) : string{
 
     let carto_element = document.createElement('div');

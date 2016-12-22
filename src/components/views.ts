@@ -12,12 +12,20 @@ export class InfoButtonView {
     this.buildInterface();
   }
 
+  expand(objectName: string, listCount: number) {
+    this.buttonElement.innerText = String(listCount) + " " + objectName;
+    // this.buttonElement.className = "leaflet-control-cartodb-infoboxplus-icon-open"
+  }
+
+  collapse() {
+    this.buttonElement.innerText = 'i';
+    // this.buttonElement.className = "leaflet-control-cartodb-infoboxplus-icon"
+  }
+
   buildInterface() {
     var self = this;
     this.buttonElement = document.createElement('a');
     this.buttonElement.innerText = 'i';
-    this.buttonElement.style.fontFamily = "serif";
-    this.buttonElement.style.fontWeight = "bold";
     this.buttonElement.setAttribute('href','#');
     this.buttonElement.className = "leaflet-control-cartodb-infoboxplus-icon";
     this.buttonElement.onclick = function(e) {
@@ -50,9 +58,12 @@ export class InfoListView {
   };
   hide() {
     this.listElement.style.display='none';
+    this.controller.listHidden();
   }
   show() {
     this.listElement.style.display='block';
+    this.controller.listShown();
+
   }
   emptyList() {
     while (this.listElement.firstChild) {
